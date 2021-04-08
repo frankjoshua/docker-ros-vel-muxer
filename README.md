@@ -1,10 +1,8 @@
-# ROS master in Docker [![](https://img.shields.io/docker/pulls/frankjoshua/ros-master)](https://hub.docker.com/r/frankjoshua/ros-master) [![CI](https://github.com/frankjoshua/docker-ros-master/workflows/CI/badge.svg)](https://github.com/frankjoshua/docker-ros-master/actions)
+# ROS velocity muxer in Docker [![](https://img.shields.io/docker/pulls/frankjoshua/ros-vel-muxer)](https://hub.docker.com/r/frankjoshua/ros-vel-muxer) [![CI](https://github.com/frankjoshua/docker-ros-vel-muxer/workflows/CI/badge.svg)](https://github.com/frankjoshua/docker-ros-vel-muxer/actions)
 
 ## Description
 
-Runs a ros master in a Docker container. Probably need --network="host" because ROS uses ephemeral ports.
-
-This repo is mostly an example of how to build a multi architecture docker container with ROS (Robotic Operating System). Github Actions is used to build 3 docker containers using `docker buildx` amd64 (x86 Desktop PC), arm64 (Jetson Nano) and arm32 (Raspberry Pi). This is for the purpose of developing locally on a work pc or laptop. Then being able to transfer your work to an embedded device with a high level of confidence of success.
+Runs a ros velocity muxer in a Docker container. Probably need --network="host" because ROS uses ephemeral ports.
 
 ## Example
 
@@ -13,7 +11,11 @@ docker run -it \
     --network="host" \
     --env="ROS_IP=$ROS_IP" \
     --env="ROS_MASTER_URI=$ROS_MASTER_URI" \
-    frankjoshua/ros-master
+    --env="COMPUTER_TOPIC=/cmd_vel/computer" \
+    --env="MANUAL_TOPIC=/pocketbot/cmd_vel" \
+    --env="X_SPEED_MULTIPLE=0.3" \
+    --env="Z_SPEED_MULTIPLE=0.3" \
+    frankjoshua/ros-vel-muxer
 ```
 
 ## Building
@@ -23,12 +25,8 @@ Use [build.sh](build.sh) to build the docker containers.
 <br>Local builds are as follows:
 
 ```
-./build.sh -t frankjoshua/ros-master -l
+./build.sh -t frankjoshua/ros-vel-muxer -l
 ```
-
-## Template
-
-This repo is a GitHub template. Just change the repo name in [.github/workflows/ci.yml](.github/workflows/ci.yml) and edit [Dockerfile](Dockerfile) and [README.md](README.md) to taste.
 
 ## Testing
 
